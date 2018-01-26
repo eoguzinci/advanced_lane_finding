@@ -24,18 +24,24 @@ plt.plot(533,320,'.') # top left (-,+)
 
 # define perspective transform function
 def warp(img):
-    
-    # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
-    objp = np.zeros((6*8,3), np.float32)
-    objp[:,:2] = np.mgrid[0:8, 0:6].T.reshape(-1,2)
 
     # Arrays to store object points and image points from all the images.
     objpoints = [] # 3d points in real world space
     imgpoints = [] # 2d points in image plane.
+
+    nx = 9 # corners horizontal
+    ny = 6 # corners vertical
+
+    # prepare object points, like (0,0,0), (1,0,0), (2,0,0) ....,(6,5,0)
+    objp = np.zeros((nx*ny,3), np.float32)
+    objp[:,:2] = np.mgrid[0:nx, 0:ny].T.reshape(-1,2)
     
     # define calibration box in source (original) and destination (desired or warped) coordinates
     img_size = (img.shape[1], img.shape[0])
     
+    # Convert image to grayscale
+    gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+
     ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, img_size,None,None)
     
     # 1) Undistort using mtx and dist
@@ -43,14 +49,14 @@ def warp(img):
     # 2) Convert to grayscale
     gray = cv2.cvtColor(dst, cv2.COLOR_BGR2GRAY)
     # 3) Find the chessboard corners
-    ret, corners = cv2.findChessboardCorners(gray, (8,6), None)
+    ret, corners = cv2.findChessboardCorners(gray, (nx,ny), None)
     
     if ret == True:
         # If found, add object points, image points
         objpoints.append(objp)
         imgpoints.append(corners)
         # a) draw corners
-        cv2.drawChessboardCorners(img, (8,6), corners, ret)
+        cv2.drawChessboardCorners(img, (nx,ny), corners, ret)
         # four source coordinates
         src = np.float32(
                 [[850,320],
@@ -86,5 +92,7 @@ f, (ax1, ax2) = plt.subplots(1,2, figsize=(20,10))
 
 ax1.set_title('Source image')
 ax1.imshow(img)
-ax2.set_title('Warped image')
-ax2.imshow(warped_im)
+ax2.set_title('Source image')
+ax2.imshow(img)
+#ax2.set_title('Warped image')
+#ax2.imshow(warped_im)
