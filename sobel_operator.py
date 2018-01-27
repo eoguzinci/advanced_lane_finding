@@ -60,12 +60,12 @@ sxbinary = sobel_directional(img,0)
 sybinary = sobel_directional(img,1)
 
 plt.figure()
-plt.subplot(121),plt.imshow(img),plt.title('TEST')
+plt.subplot(121),plt.imshow(img),plt.title('Test image')
 plt.subplot(122),plt.imshow(sxbinary, cmap='gray'),plt.title('Sobelx')
 plt.show()
 
 plt.figure()
-plt.subplot(121),plt.imshow(img),plt.title('TEST')
+plt.subplot(121),plt.imshow(img),plt.title('Test Image')
 plt.subplot(122),plt.imshow(sybinary, cmap='gray'),plt.title('Sobely')
 plt.show()
 
