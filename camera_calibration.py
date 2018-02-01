@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 
 # Read in a calibration image
-img = mpimg.imread('./camera_cal/calibration1.jpg')
+img = mpimg.imread('./camera_cal/calibration01.jpg')
 plt.imshow(img)
 
 import glob
@@ -22,8 +22,6 @@ cols = 9
 # Prepare object points, like (0,0,0),(1,0,0),(2,0,0) ... (7,5,0)
 objp = np.zeros((rows*cols,3),np.float32)
 objp[:,:2] = np.mgrid[0:cols,0:rows].T.reshape(-1,2) #x,y coordinates
-
-indices=[13,1,10,11,12,14,15,16,17,18,19,2,20,3,4,5,6,7,8]
 
 for idx,fname in enumerate(images):
     # read in each image
@@ -43,9 +41,9 @@ for idx,fname in enumerate(images):
         # draw and display the corners
         img =cv2.drawChessboardCorners(img, (cols,rows),corners,ret)
         plt.imshow(img)
-        plt.savefig('chessboard_lines'+str(indices[idx])+'.png')
+        plt.savefig('chessboard_lines'+str(idx)+'.png')
 
-img = mpimg.imread('./camera_cal/calibration1.jpg')
+img = mpimg.imread('./camera_cal/calibration01.jpg')
 gray1 = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
 gray2 = cv2.cvtColor(img,cv2.COLOR_RGB2GRAY)
 
@@ -54,4 +52,3 @@ plt.subplot(1,2,1)
 plt.imshow(gray1)
 plt.subplot(1,2,2)
 plt.imshow(gray2)
-
