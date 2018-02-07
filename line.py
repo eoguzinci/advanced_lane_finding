@@ -1,3 +1,8 @@
+import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+
 # Define a class to receive the characteristics of each line detection
 class Line():
     def __init__(self):
@@ -21,3 +26,16 @@ class Line():
         self.allx = None  
         #y values for detected line pixels
         self.ally = None
+    def add_fit(self, fit):
+        if fit is not None:
+            if self.best_fit is not None:
+                self.diffs = abs(fit-self.best_fit)
+            # Sanity check
+            self.detected = True
+            self.current_fit.append(fit)
+            # in order to store only the latest 5 fits
+            if len(self.current_fit) > 5:
+                self.current_fit = self.current_fit[len(self.current_fit)-5:]
+            self.best_fit = np.average(self.current_fit, axis=0)
+        else:
+            self.detected = False

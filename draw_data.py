@@ -14,7 +14,7 @@ def get_curvature(binary_warped, left_fit,right_fit,ploty, left_fitx, right_fitx
 
     # Define conversions in x and y from pixels space to meters
     ym_per_pix = 30/720 # meters per pixel in y dimension
-    xm_per_pix = 3.7/700 # meters per pixel in x dimension
+    xm_per_pix = 3.7/680 # meters per pixel in x dimension
 
     # Fit new polynomials to x,y in world space
     left_fit_cr = np.polyfit(ploty*ym_per_pix, left_fitx*xm_per_pix, 2)
@@ -59,37 +59,52 @@ def draw_lane(image, binary_warped, left_fit, right_fit, Minv, mtx, dist):
     undist = undistort(image,mtx,dist)
     result = cv2.addWeighted(undist, 1, newwarp, 0.3, 0)
     plt.figure()
-    # plt.imshow(result)
 
     #draw curvature and center offset
     left_curv, right_curv, offset, lane_width = get_curvature(binary_warped, left_fit, right_fit, ploty, left_fitx, right_fitx)
     center_curv = (left_curv+right_curv)/2
-    # SANITY CHECK
-    err_curv = (left_curv-right_curv)/left_curv
-    curve_cond = (left_curv<1000.0 and right_curv<1000.0) 
-    curve_simil = (err_curv<0.05) 
-    lane_cond = (lane_width<4.0 and lane_width>3.4)
-    condition = curve_cond and curve_simil and lane_cond
-    if condition==True:
-        h = result.shape[0]
-        font = cv2.FONT_HERSHEY_DUPLEX
-        text = 'Curve radius: ' + '{:04.2f}'.format(center_curv) + 'm'
-        cv2.putText(result, text, (40,70), font, 1.5, (200,255,155), 2, cv2.LINE_AA)
-        shift = ''
-        if offset > 0:
-            shift = 'right'
-        elif offset < 0:
-            shift = 'left'
-        text = '{:04.3f}'.format(abs(offset)) + 'm ' + shift + ' of center'
-        cv2.putText(result, text, (40,120), font, 1.5, (200,255,155), 2, cv2.LINE_AA)
-        plt.imshow(result)
-    else:
-        if curve_cond==False:
-            print('Curvature calculated wrong!\nLeft curve: '+'{:04.2f}'.format(left_curv)+', Right curve: '+'{:04.2f}'.format(right_curv))
-        if curve_simil==False:
-            print('Curvatures not similar!\nError = '+'{:0.3f}'.format(err_curv))
-        if lane_cond==False:
-            if lane_width>4.0:
-                print('Lane width exceeds 4m!'+'{:1.3f}'.format(lane_width))
-            if lane_width<3.4:
-                print('Lane width even smaller than 3.4m')
+    
+    h = result.shape[0]
+    font = cv2.FONT_HERSHEY_DUPLEX
+    text = 'Curve radius: ' + '{:04.2f}'.format(center_curv) + 'm'
+    cv2.putText(result, text, (40,70), font, 1.5, (200,255,155), 2, cv2.LINE_AA)
+    shift = ''
+    if offset > 0:
+        shift = 'right'
+    elif offset < 0:
+        shift = 'left'
+    text = '{:04.3f}'.format(abs(offset)) + 'm ' + shift + ' of center'
+    cv2.putText(result, text, (40,120), font, 1.5, (200,255,155), 2, cv2.LINE_AA)
+    plt.imshow(result)
+    return result
+    # plt.imshow(result)
+    
+    # # SANITY CHECK
+    # err_curv = (left_curv-right_curv)/left_curv
+    # curve_cond = (left_curv<1000.0 and right_curv<1000.0) 
+    # curve_simil = (err_curv<0.05) 
+    # lane_cond = (lane_width<4.0 and lane_width>3.4)
+    # condition = curve_cond and curve_simil and lane_cond
+    # if condition==True:
+    #     h = result.shape[0]
+    #     font = cv2.FONT_HERSHEY_DUPLEX
+    #     text = 'Curve radius: ' + '{:04.2f}'.format(center_curv) + 'm'
+    #     cv2.putText(result, text, (40,70), font, 1.5, (200,255,155), 2, cv2.LINE_AA)
+    #     shift = ''
+    #     if offset > 0:
+    #         shift = 'right'
+    #     elif offset < 0:
+    #         shift = 'left'
+    #     text = '{:04.3f}'.format(abs(offset)) + 'm ' + shift + ' of center'
+    #     cv2.putText(result, text, (40,120), font, 1.5, (200,255,155), 2, cv2.LINE_AA)
+    #     plt.imshow(result)
+    # else:
+    #     if curve_cond==False:
+    #         print('Curvature calculated wrong!\nLeft curve: '+'{:04.2f}'.format(left_curv)+', Right curve: '+'{:04.2f}'.format(right_curv))
+    #     if curve_simil==False:
+    #         print('Curvatures not similar!\nError = '+'{:0.3f}'.format(err_curv))
+    #     if lane_cond==False:
+    #         if lane_width>4.0:
+    #             print('Lane width exceeds 4m!'+'{:1.3f}'.format(lane_width))
+    #         if lane_width<3.4:
+    #             print('Lane width even smaller than 3.4m')

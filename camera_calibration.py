@@ -60,7 +60,7 @@ def calibrate_cam():
     pickle.dump( dist_pickle, open( "calibration.p", "wb" ) )
     #dst = cv2.cvtColor(dst, cv2.COLOR_BGR2RGB)
     
-    # Visualize undistortion
+    # # Visualize undistortion
     # f, (ax1, ax2) = plt.subplots(1, 2, figsize=(20,10))
     # f.subplots_adjust(hspace = .2, wspace=.05)
     # ax1.imshow(img)
