@@ -21,6 +21,10 @@ The goals / steps of this project are the following:
 [image6]: ./examples/example_output.jpg "Output"
 [video1]: ./project_video.mp4 "Video"
 
+## Introduction
+
+In this project, we will find the lanes that the car is commuting on the road and highlight it on each frame of an example video. For this project, I have two  
+
 ## [Rubric](https://review.udacity.com/#!/rubrics/571/view) Points
 
 ### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  

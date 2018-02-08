@@ -28,14 +28,26 @@ class Line():
         self.ally = None
     def add_fit(self, fit):
         if fit is not None:
-            if self.best_fit is not None:
-                self.diffs = abs(fit-self.best_fit)
-            # Sanity check
-            self.detected = True
-            self.current_fit.append(fit)
-            # in order to store only the latest 5 fits
-            if len(self.current_fit) > 5:
-                self.current_fit = self.current_fit[len(self.current_fit)-5:]
-            self.best_fit = np.average(self.current_fit, axis=0)
+            if len(self.current_fit)>0:
+                self.diffs = abs(fit-self.current_fit[-1])
+            # Sanity check 
+            if (self.diffs[0] > 0.001 or \
+                self.diffs[1] > 1.0 or \
+                self.diffs[2] > 100.) and\
+                len(self.current_fit) > 0:
+                self.detected = False
+            else:
+                self.detected = True
+                self.current_fit.append(fit)
+                # store only the latest 5 fits
+                if len(self.current_fit) > 5:
+                    self.current_fit = self.current_fit[len(self.current_fit)-5:]
+                self.best_fit = np.average(self.current_fit, axis=0)
         else:
             self.detected = False
+            # pop out the oldest fit, if there is any
+            if len(self.current_fit) > 0:
+                self.current_fit = self.current_fit[:len(self.current_fit)-1]
+            # calculate the best_fit is their average among the current_fits, if there are any
+            if len(self.current_fit) > 0:
+                self.best_fit = np.average(self.current_fit, axis=0)

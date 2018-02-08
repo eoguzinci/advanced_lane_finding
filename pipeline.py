@@ -53,7 +53,12 @@ mtx, dist = calibrate_cam()
 left_line = Line()
 right_line = Line()
 
-video_input = VideoFileClip('project_video.mp4')
-video_output = 'project_video_output.mp4'
+# video_input = VideoFileClip('project_video.mp4')
+# video_output = 'project_video_output.mp4'
+# processed_video = video_input.fl_image(process_image)
+# processed_video.write_videofile(video_output, audio=False)
+
+video_input = VideoFileClip('challenge_video.mp4')
+video_output = 'challenge_video_output.mp4'
 processed_video = video_input.fl_image(process_image)
 processed_video.write_videofile(video_output, audio=False)
