@@ -14,7 +14,7 @@ from line import Line
 
 global mtx, dist, left_line, right_line
 
-def process_image(img):
+def pipeline(img):
 	new_img = np.copy(img)
 	img_binary, Minv = binary_warp_thresh(new_img,mtx,dist)
 	if not left_line.detected or not right_line.detected:
@@ -53,12 +53,12 @@ mtx, dist = calibrate_cam()
 left_line = Line()
 right_line = Line()
 
-# video_input = VideoFileClip('project_video.mp4')
-# video_output = 'project_video_output.mp4'
-# processed_video = video_input.fl_image(process_image)
-# processed_video.write_videofile(video_output, audio=False)
-
-video_input = VideoFileClip('challenge_video.mp4')
-video_output = 'challenge_video_output.mp4'
-processed_video = video_input.fl_image(process_image)
+video_input = VideoFileClip('project_video.mp4')
+video_output = 'project_video_output.mp4'
+processed_video = video_input.fl_image(pipeline)
 processed_video.write_videofile(video_output, audio=False)
+
+# video_input = VideoFileClip('challenge_video.mp4')
+# video_output = 'challenge_video_output.mp4'
+# processed_video = video_input.fl_image(pipeline)
+# processed_video.write_videofile(video_output, audio=False)

@@ -21,8 +21,15 @@ from draw_data import draw_lane, get_curvature
 
 global mtx, dist
 
+# If you run the camera calibration for the first time
 # Calibration matrix and distortion coefs
-mtx, dist = calibrate_cam()
+# mtx, dist = calibrate_cam()
+
+# Global variables (just to make the moviepy video annotation work)
+with open('calibration.p', 'rb') as f:
+	save_dict = pickle.load(f)
+mtx = save_dict['mtx']
+dist = save_dict['dist']
 
 plt.figure()
 test_image = mpimg.imread('./test_images/test3.jpg')
@@ -73,6 +80,9 @@ test_warp, M, Minv = perspective_warp(test_undistort, src, dst)
 # ax1.set_xlim([0,w])
 # ax1.set_title('Undistorted Image', fontsize=30)
 # ax2.imshow(test_warp)
+# x = [dst[0][0],dst[1][0],dst[2][0],dst[3][0],dst[0][0]]
+# y = [dst[0][1],dst[1][1],dst[2][1],dst[3][1],dst[0][1]]
+# ax2.plot(x, y, color='#ff0000', alpha=0.4, linewidth=3, solid_capstyle='round', zorder=2)
 # ax2.set_title('Warped Image', fontsize=30)
 
 # # Threshold to Saturation

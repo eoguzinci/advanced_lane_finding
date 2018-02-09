@@ -65,14 +65,16 @@ def combined_threshold(img):
     combined_binary = np.zeros_like(sxbinary)
     combined_binary[(s_binary == 1) | (sxbinary == 1)] = 1
 
-    # Plotting thresholded images
-    f, (ax1, ax2) = plt.subplots(1, 2, figsize=(20,10))
-    ax1.set_title('Stacked thresholds')
-    ax1.imshow(color_binary)
+    # # Plotting thresholded images
+    # f, (ax1, ax2) = plt.subplots(1, 2, figsize=(20,10))
+    # ax1.set_title('Stacked thresholds')
+    # ax1.imshow(color_binary)
 
-    ax2.set_title('Combined S channel and gradient thresholds')
-    ax2.imshow(combined_binary, cmap='gray')
+    # ax2.set_title('Combined S channel and gradient thresholds')
+    # ax2.imshow(combined_binary, cmap='gray')
 
+    plt.figure()
+    plt.imshow(combined_binary, cmap='gray')
     histogram = np.sum(combined_binary[combined_binary.shape[0]//2:,:], axis=0)
     plt.plot(histogram,'g')
     return combined_binary

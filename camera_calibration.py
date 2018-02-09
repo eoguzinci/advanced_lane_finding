@@ -40,7 +40,7 @@ def calibrate_cam():
             corners2 = cv2.cornerSubPix(gray,corners,(11,11),(-1,-1),criteria)
             imgpoints.append(corners2)
         
-            # Draw and display the corners
+            # # Draw and display the corners
             # img = cv2.drawChessboardCorners(img, (9,6), corners, ret)
             # axs[i].axis('off')
             # axs[i].imshow(img)
